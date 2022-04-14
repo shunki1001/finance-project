@@ -7,10 +7,8 @@ const currencyFormatter = new Intl.NumberFormat("ja-JP", {
   currency: "JPY",
 });
 
-const DataReading = () => {
-  var today = new Date();
-  var month = today.getMonth() + 1;
-
+// Firebaseからのデータ読み込み
+export const DataReading = (month) => {
   const [koteiList, setKoteiList] = useState([]);
   const [dailyList, setDailyList] = useState([]);
 
@@ -56,41 +54,52 @@ const DataReading = () => {
     };
   }, [month]);
 
+  return [koteiList, dailyList];
+};
+
+// 毎月の残高計算
+const DataCalculation = (props) => {
+  const { month } = props;
+
+  const yosan = 260000;
+  const data = DataReading(month);
+
   var sumKotei = 0;
-  koteiList.map((item) => {
+  data[0].map((item) => {
     sumKotei += Number(item.cost);
   });
 
   var sumDaily = 0;
-  dailyList.map((item) => {
+  data[1].map((item) => {
     sumDaily += Number(item.cost);
   });
 
-  return [sumKotei, sumDaily];
+  return <>{currencyFormatter.format(Number(yosan - sumKotei - sumDaily))}</>;
 };
 
-const DataCalculation = () => {
-  const data = DataReading();
+// 固定費の合計
+export const KoteiSum = (props) => {
+  const { month } = props;
 
-  const sumKotei = data[0];
-  const sumDaily = data[1];
+  const data = DataReading(month);
 
-  return <>{currencyFormatter.format(Number(260000 - sumKotei - sumDaily))}</>;
-};
-
-export const KoteiSum = () => {
-  const data = DataReading();
-
-  const sumKotei = data[0];
+  var sumKotei = 0;
+  data[0].map((item) => {
+    sumKotei += Number(item.cost);
+  });
 
   return <>{currencyFormatter.format(Number(sumKotei))}</>;
 };
 
-export const DailySum = () => {
-  const data = DataReading();
+// 生活費の合計
+export const DailySum = (props) => {
+  const { month } = props;
+  const data = DataReading(month);
 
-  const sumDaily = data[1];
-
+  var sumDaily = 0;
+  data[1].map((item) => {
+    sumDaily += Number(item.cost);
+  });
   return <>{currencyFormatter.format(Number(sumDaily))}</>;
 };
 

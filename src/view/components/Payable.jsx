@@ -1,17 +1,18 @@
 import DataCalculation, { DailySum, KoteiSum } from "../../data-calculation";
 import React from "react";
 
-const Payable = () => {
+const Payable = (props) => {
+  const { month } = props;
   return (
     <div>
       <h2>
-        今月の残りの金額は
-        <DataCalculation />
+        {month}月の残りの金額は
+        <DataCalculation month={month} />
         です。
       </h2>
       <h3>
         固定費は
-        <KoteiSum /> | 生活費は <DailySum />
+        <KoteiSum month={month} /> | 生活費は <DailySum month={month} />
         使っています
       </h3>
     </div>

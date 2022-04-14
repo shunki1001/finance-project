@@ -11,6 +11,7 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import CreditScoreIcon from "@mui/icons-material/CreditScore";
 import CottageIcon from "@mui/icons-material/Cottage";
+import SsidChartIcon from "@mui/icons-material/SsidChart";
 
 import InputFab from "../components/InputFab";
 
@@ -52,6 +53,16 @@ const MainLayout = () => {
                 <ListItemText>
                   <Link style={{ display: "block" }} to="/kotei">
                     固定費
+                  </Link>
+                </ListItemText>
+              </ListItem>
+              <ListItem button>
+                <ListItemIcon>
+                  <SsidChartIcon />
+                </ListItemIcon>
+                <ListItemText>
+                  <Link style={{ display: "block" }} to="/visualization">
+                    データ推移
                   </Link>
                 </ListItemText>
               </ListItem>

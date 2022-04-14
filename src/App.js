@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Dashboard from "./view/Dashboard";
 import Kotei from "./view/Kotei";
 import MainLayout from "./view/MainLayout";
+import Visualization from "./view/Visualization";
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
         <Route path="/" element={<MainLayout />}>
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="kotei" element={<Kotei />} />
+          <Route path="visualization" element={<Visualization />} />
         </Route>
       </Routes>
     </BrowserRouter>
