@@ -6,6 +6,7 @@ const currencyFormatter = new Intl.NumberFormat("ja-JP", {
   style: "currency",
   currency: "JPY",
 });
+const yosan = 260000 - 14000;
 
 // Firebaseからのデータ読み込み
 export const DataReading = (month) => {
@@ -61,7 +62,6 @@ export const DataReading = (month) => {
 const DataCalculation = (props) => {
   const { month } = props;
 
-  const yosan = 260000;
   const data = DataReading(month);
 
   var sumKotei = 0;
@@ -71,7 +71,11 @@ const DataCalculation = (props) => {
 
   var sumDaily = 0;
   data[1].map((item) => {
-    sumDaily += Number(item.cost);
+    if (item.category == "旅行") {
+      console.log("旅行費だよん");
+    } else {
+      sumDaily += Number(item.cost);
+    }
   });
 
   return <>{currencyFormatter.format(Number(yosan - sumKotei - sumDaily))}</>;
@@ -98,9 +102,28 @@ export const DailySum = (props) => {
 
   var sumDaily = 0;
   data[1].map((item) => {
-    sumDaily += Number(item.cost);
+    if (item.category == "旅行") {
+      console.log("旅行費だよん");
+    } else {
+      sumDaily += Number(item.cost);
+    }
   });
   return <>{currencyFormatter.format(Number(sumDaily))}</>;
+};
+
+// 旅行費の合計
+export const TemporarySum = (props) => {
+  const { month } = props;
+  const data = DataReading(month);
+
+  var sumTemporary = Number(0);
+  data[1].map((item) => {
+    if (item.category == "旅行") {
+      sumTemporary += Number(item.cost);
+    } else {
+    }
+  });
+  return <>{currencyFormatter.format(Number(sumTemporary))}</>;
 };
 
 export default DataCalculation;

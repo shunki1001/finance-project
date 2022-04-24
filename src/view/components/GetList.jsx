@@ -86,6 +86,16 @@ const GetList = (props) => {
   }, [month]);
 
   // Update
+  const processRowUpdate = async (newRow, oldRow) => {
+    // console.log(newRow);
+    // console.log(oldRow);
+    const updateData = {
+      title: newRow.title,
+      cost: newRow.cost,
+    };
+    await updateDoc(doc(db, collectionName, newRow.id), updateData);
+    return { ...newRow };
+  };
 
   // Delete
   const DeleteItems = () => {
@@ -99,28 +109,26 @@ const GetList = (props) => {
   };
 
   return (
-    <div style={{ height: 600, width: "100%" }}>
+    <div style={{ height: "100vh", width: "100%" }}>
       <Button onClick={() => setCheckboxSelection(!checkboxSelection)} />
       <DataGrid
         rows={rows}
         columns={columns}
-        pageSize={10}
-        rowsPerPageOptions={[10]}
+        pageSize={100}
+        rowsPerPageOptions={[100]}
         checkboxSelection
         onSelectionModelChange={(ids) => {
           setSelectedItem([...ids, { id: ids }]);
         }}
         experimentalFeatures={{ newEditingApi: true }}
-        // processRowUpdate={(newRow, oldRow) => {
-        //     console.log(newRow);
-        //     console.log(oldRow);
+        processRowUpdate={(newRow, oldRow) => processRowUpdate(newRow, oldRow)}
+        onProcessRowUpdateError={(error) => console.log("更新に失敗しました")}
+        // onCellEditCommit={(params) => {
+        //   console.log(params);
+        // var updateData = {};
+        // updateData[params.field] = params.value;
+        // updateDoc(doc(db, collectionName, params.id), updateData);
         // }}
-        onCellEditCommit={(params) => {
-          console.log(params);
-          var updateData = {};
-          updateData[params.field] = params.value;
-          updateDoc(doc(db, collectionName, params.id), updateData);
-        }}
       />
       <Button variant="contained" onClick={DeleteItems}>
         DELETE

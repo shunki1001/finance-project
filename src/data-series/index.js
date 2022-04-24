@@ -5,9 +5,18 @@ import { collection, where, query, getDocs } from "firebase/firestore";
 
 import Chart from "react-apexcharts";
 
-const categories = ["固定費", "食料品", "外食", "日用品", "車", "その他"];
+const categories = [
+  "固定費",
+  "食料品",
+  "外食",
+  "日用品",
+  "車",
+  "その他",
+  "旅行",
+];
 
-const DataSeries = () => {
+const DataSeries = (props) => {
+  const { loading, setLoading } = props;
   // Chartのオプション、データを初期化
   const [state, setState] = useState({
     options: {
@@ -211,6 +220,7 @@ const DataSeries = () => {
         },
       ];
       console.log("useEffectが呼ばれた");
+      setLoading(false);
       setState({ ...state, series: tempstate });
     };
     // useEffectの戻り値はクリーンアップ関数じゃないとダメ
@@ -218,7 +228,14 @@ const DataSeries = () => {
     f();
   }, []);
 
-  return <Chart type="bar" options={state.options} series={state.series} />;
+  return (
+    <Chart
+      type="bar"
+      height={800}
+      options={state.options}
+      series={state.series}
+    />
+  );
 };
 
 export default DataSeries;

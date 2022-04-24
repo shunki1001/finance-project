@@ -29,6 +29,14 @@ const categories = [
     label: "日用品",
   },
   {
+    value: "車",
+    label: "車",
+  },
+  {
+    value: "旅行",
+    label: "旅行",
+  },
+  {
     value: "その他",
     label: "その他",
   },

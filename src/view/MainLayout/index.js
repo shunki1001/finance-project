@@ -1,5 +1,5 @@
 import React from "react";
-import { Outlet, Link } from "react-router-dom";
+import { Outlet, Link, NavLink } from "react-router-dom";
 
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
@@ -41,7 +41,14 @@ const MainLayout = () => {
                   <CreditScoreIcon />
                 </ListItemIcon>
                 <ListItemText>
-                  <Link style={{ display: "block" }} to="/dashboard">
+                  <Link
+                    style={{
+                      display: "block",
+                      color: "#666",
+                      textDecoration: "none",
+                    }}
+                    to="/dashboard"
+                  >
                     生活費
                   </Link>
                 </ListItemText>
@@ -51,7 +58,14 @@ const MainLayout = () => {
                   <CottageIcon />
                 </ListItemIcon>
                 <ListItemText>
-                  <Link style={{ display: "block" }} to="/kotei">
+                  <Link
+                    style={{
+                      display: "block",
+                      color: "#666",
+                      textDecoration: "none",
+                    }}
+                    to="/kotei"
+                  >
                     固定費
                   </Link>
                 </ListItemText>
@@ -61,7 +75,14 @@ const MainLayout = () => {
                   <SsidChartIcon />
                 </ListItemIcon>
                 <ListItemText>
-                  <Link style={{ display: "block" }} to="/visualization">
+                  <Link
+                    style={{
+                      display: "block",
+                      color: "#666",
+                      textDecoration: "none",
+                    }}
+                    to="/visualization"
+                  >
                     データ推移
                   </Link>
                 </ListItemText>

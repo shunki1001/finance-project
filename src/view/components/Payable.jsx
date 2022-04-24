@@ -1,4 +1,8 @@
-import DataCalculation, { DailySum, KoteiSum } from "../../data-calculation";
+import DataCalculation, {
+  DailySum,
+  KoteiSum,
+  TemporarySum,
+} from "../../data-calculation";
 import React from "react";
 
 const Payable = (props) => {
@@ -14,6 +18,11 @@ const Payable = (props) => {
         固定費は
         <KoteiSum month={month} /> | 生活費は <DailySum month={month} />
         使っています
+      </h3>
+      <h3>
+        臨時的な出費として、
+        <TemporarySum month={month} />
+        使っています。
       </h3>
     </div>
   );
