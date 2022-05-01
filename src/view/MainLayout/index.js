@@ -12,6 +12,7 @@ import ListItemText from "@mui/material/ListItemText";
 import CreditScoreIcon from "@mui/icons-material/CreditScore";
 import CottageIcon from "@mui/icons-material/Cottage";
 import SsidChartIcon from "@mui/icons-material/SsidChart";
+import MenuIcon from '@mui/icons-material/Menu';
 
 import InputFab from "../components/InputFab";
 
@@ -26,7 +27,7 @@ const MainLayout = () => {
     <div>
       <React.Fragment>
         <Button onClick={toggleDrawer(true)} variant="outlined">
-          Menu
+          <MenuIcon />
         </Button>
         <Drawer anchor="left" open={state} onClose={toggleDrawer(false)}>
           <Box
@@ -93,7 +94,8 @@ const MainLayout = () => {
         </Drawer>
         <InputFab />
       </React.Fragment>
-      <Outlet />
+      <Box sx={{ m:1 }}><Outlet /></Box>
+      
     </div>
   );
 };

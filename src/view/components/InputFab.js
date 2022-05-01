@@ -56,12 +56,16 @@ const ways = [
     label: "Tカード",
   },
   {
-    value: "iD",
-    label: "iD",
-  },
-  {
     value: "paypay",
     label: "paypay",
+  },
+  {
+    value: "from楽天",
+    label: "from楽天",
+  },
+  {
+    value: "fromSBI",
+    label: "fromSBI",
   },
 ];
 

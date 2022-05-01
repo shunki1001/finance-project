@@ -83,13 +83,17 @@ const DataSeries = (props) => {
             collection(db, "daily"),
             where("month", ">=", startAt),
             where("month", "<", endAt),
-            where("category", "==", categories[category])
+            where("category", "==", categories[category]),
           );
           const df = await getDocs(q);
 
           var tempSum = 0;
           df.forEach((doc) => {
-            tempSum = tempSum + Number(doc.data().cost);
+            if(doc.data().way != "from楽天" && doc.data().way != "fromSBI"){
+              tempSum = tempSum + Number(doc.data().cost);
+            }else{
+              console.log("補充したね～")
+            }
           });
 
           tempObject[categories[category]] = tempSum;
@@ -216,6 +220,23 @@ const DataSeries = (props) => {
             sumData[9][categories[5]],
             sumData[10][categories[5]],
             sumData[11][categories[5]],
+          ],
+        },
+        {
+          name: categories[6],
+          data: [
+            sumData[0][categories[6]],
+            sumData[1][categories[6]],
+            sumData[2][categories[6]],
+            sumData[3][categories[6]],
+            sumData[4][categories[6]],
+            sumData[5][categories[6]],
+            sumData[6][categories[6]],
+            sumData[7][categories[6]],
+            sumData[8][categories[6]],
+            sumData[9][categories[6]],
+            sumData[10][categories[6]],
+            sumData[11][categories[6]],
           ],
         },
       ];

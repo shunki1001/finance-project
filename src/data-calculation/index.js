@@ -6,16 +6,18 @@ const currencyFormatter = new Intl.NumberFormat("ja-JP", {
   style: "currency",
   currency: "JPY",
 });
-const yosan = 260000 - 14000;
+const yosan = 260000;
 
 // Firebaseからのデータ読み込み
 export const DataReading = (month) => {
   const [koteiList, setKoteiList] = useState([]);
   const [dailyList, setDailyList] = useState([]);
+  const [cardList, setCardList] = useState([]);
 
   useEffect(() => {
     const startAt = new Date(2022, month - 1, 1);
     const endAt = new Date(2022, month, 1);
+    // 固定費のデータ
     const q = query(
       collection(db, "kotei"),
       where("month", ">=", startAt),
@@ -32,7 +34,7 @@ export const DataReading = (month) => {
       // console.log(data);
       setKoteiList(data);
     });
-
+    // 生活費のデータ
     const q2 = query(
       collection(db, "daily"),
       where("month", ">=", startAt),
@@ -49,13 +51,32 @@ export const DataReading = (month) => {
       // console.log(data);
       setDailyList(data2);
     });
+    // カード明細のデータ
+    // 生活費のデータ
+    const q3 = query(
+      collection(db, "card"),
+      where("month", "==", month+1)
+    );
+    const unsubscribe3 = onSnapshot(q3, (querySnapshot) => {
+      var data3 = [];
+      var temp3 = [];
+      querySnapshot.forEach((doc) => {
+        temp3 = doc.data();
+        temp3["id"] = doc.id;
+        data3.push(temp3);
+      });
+      console.log(data3);
+      setCardList(data3);
+    });
+
     return () => {
       unsubscribe();
       unsubscribe2();
+      unsubscribe3();
     };
   }, [month]);
 
-  return [koteiList, dailyList];
+  return [koteiList, dailyList, cardList];
 };
 
 // 毎月の残高計算
@@ -71,11 +92,7 @@ const DataCalculation = (props) => {
 
   var sumDaily = 0;
   data[1].map((item) => {
-    if (item.category == "旅行") {
-      console.log("旅行費だよん");
-    } else {
-      sumDaily += Number(item.cost);
-    }
+    sumDaily += Number(item.cost);
   });
 
   return <>{currencyFormatter.format(Number(yosan - sumKotei - sumDaily))}</>;
@@ -102,9 +119,7 @@ export const DailySum = (props) => {
 
   var sumDaily = 0;
   data[1].map((item) => {
-    if (item.category == "旅行") {
-      console.log("旅行費だよん");
-    } else {
+    if (item.category == "旅行") {} else {
       sumDaily += Number(item.cost);
     }
   });
@@ -112,18 +127,88 @@ export const DailySum = (props) => {
 };
 
 // 旅行費の合計
-export const TemporarySum = (props) => {
+export const TripSum = (props) => {
   const { month } = props;
   const data = DataReading(month);
 
-  var sumTemporary = Number(0);
+  var sumTrip = 0;
   data[1].map((item) => {
     if (item.category == "旅行") {
-      sumTemporary += Number(item.cost);
+      sumTrip += Number(item.cost);
+    } else {}
+  });
+  return <>{currencyFormatter.format(Number(sumTrip))}</>;
+};
+
+// 補充金額の合計
+export const TemporarySumFromRakuten = (props) => {
+  const { month } = props;
+  const data = DataReading(month);
+
+  var sumTemporaryRakuten = Number(0);
+  data[1].map((item) => {
+    if (item.way == "from楽天") {
+      sumTemporaryRakuten -= Number(item.cost);
     } else {
     }
   });
-  return <>{currencyFormatter.format(Number(sumTemporary))}</>;
+  return <>{currencyFormatter.format(Number(sumTemporaryRakuten))}</>;
 };
+export const TemporarySumFromSbi = (props) => {
+  const { month } = props;
+  const data = DataReading(month);
+
+  var sumTemporarySbi = Number(0);
+  data[1].map((item) => {
+    if (item.way == "fromSBI") {
+      sumTemporarySbi -= Number(item.cost);
+    } else {
+    }
+  });
+  return <>{currencyFormatter.format(Number(sumTemporarySbi))}</>;
+};
+
+// 会員ページとの整合
+export const CardValidation = (props) => {
+  const { month } = props;
+  const data = DataReading(month);
+
+  // 入力データの合計
+  var sumRakuten = 0;
+  var sumT = 0;
+  data[0].map((item)=>{
+    if(item.way == "楽天"){
+      sumRakuten += Number(item.cost)
+    }else if(item.way == "Tカード"){
+      sumT += Number(item.cost)
+    }
+  })
+
+  data[1].map((item)=>{
+    if(item.way == "楽天"){
+      sumRakuten += Number( item.cost)
+    }else if(item.way == "Tカード"){
+      sumT += Number( item.cost)
+    }
+  })
+
+  // カードのご利用明細
+  var sumRakutenCard = 0;
+  var sumTCard = 0;
+  data[2].map((item) => {
+    if (item.way == "楽天カード") {
+      sumRakutenCard = item.cost;
+    } else if(item.way == "Tカード"){
+      sumTCard = item.cost;
+    }
+  });
+
+  return (<>
+  楽天{currencyFormatter.format(Number(sumRakuten))} / {currencyFormatter.format(Number(sumRakutenCard))} {(sumRakuten - sumRakutenCard == 0)? "Good!":"Bad..."}<br />
+  Tカード{currencyFormatter.format(Number(sumT))} / {currencyFormatter.format(Number(sumTCard))} {(sumT - sumTCard == 0)? "Good!":"Bad..."}
+  </>);
+}
+
+
 
 export default DataCalculation;

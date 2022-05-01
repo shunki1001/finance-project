@@ -17,6 +17,69 @@ import { DataGrid } from "@mui/x-data-grid";
 const GetList = (props) => {
   const { collectionName, month } = props;
 
+  var selectCategories = []
+  if (collectionName == 'kotei'){
+    selectCategories = [
+      {
+        value: '固定費',
+        label: "固定費"
+      }
+    ]
+  }else {
+    selectCategories = [
+      {
+        value: "食料品",
+        label: "食料品",
+      },
+      {
+        value: "外食",
+        label: "外食",
+      },
+      {
+        value: "日用品",
+        label: "日用品",
+      },
+      {
+        value: "車",
+        label: "車",
+      },
+      {
+        value: "旅行",
+        label: "旅行",
+      },
+      {
+        value: "その他",
+        label: "その他",
+      },
+    ]
+  }
+  const selectWays = [
+    {
+      value: "現金",
+      label: "現金",
+    },
+    {
+      value: "楽天",
+      label: "楽天",
+    },
+    {
+      value: "Tカード",
+      label: "Tカード",
+    },
+    {
+      value: "paypay",
+      label: "paypay",
+    },
+    {
+      value: "from楽天",
+      label: "from楽天",
+    },
+    {
+      value: "fromSBI",
+      label: "fromSBI",
+    },
+  ];
+
   const [dataList, setDataList] = useState([]);
   const [checkboxSelection, setCheckboxSelection] = useState(true);
   const [selectedItem, setSelectedItem] = useState([]);
@@ -49,6 +112,22 @@ const GetList = (props) => {
       width: 100,
       editable: false,
     },
+    {
+      field: "category",
+      headerName: "カテゴリー",
+      type: "singleSelect",
+      width: 100,
+      editable: true,
+      valueOptions: selectCategories
+    },
+    {
+      field: "way",
+      headerName: "支払方法",
+      type: "singleSelect",
+      width: 150,
+      editable: true,
+      valueOptions: selectWays
+    },
   ];
   const rows = dataList.map((item) => {
     var todayTimestamp = new Date(item.month.seconds * 1000);
@@ -57,6 +136,8 @@ const GetList = (props) => {
       title: item.title,
       cost: item.cost,
       month: `${todayTimestamp.getMonth() + 1}/${todayTimestamp.getDate()}`,
+      category: `${item.category ? item.category: '固定費'}`,
+      way: item.way
     };
   });
 
@@ -92,6 +173,8 @@ const GetList = (props) => {
     const updateData = {
       title: newRow.title,
       cost: newRow.cost,
+      category: newRow.category,
+      way: newRow.way
     };
     await updateDoc(doc(db, collectionName, newRow.id), updateData);
     return { ...newRow };
