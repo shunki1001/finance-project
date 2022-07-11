@@ -16,7 +16,7 @@ const Visualization = () => {
       </Box>
       <h2>楽天銀行、SBIから補充する前の出費だよ～</h2>
       <Grid item xs={12}>
-        <DataSeries loading={loading} setLoading={setLoading} />
+        <DataSeries setLoading={setLoading} />
       </Grid>
     </Grid>
   );

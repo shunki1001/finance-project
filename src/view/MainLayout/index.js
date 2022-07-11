@@ -12,7 +12,7 @@ import ListItemText from "@mui/material/ListItemText";
 import CreditScoreIcon from "@mui/icons-material/CreditScore";
 import CottageIcon from "@mui/icons-material/Cottage";
 import SsidChartIcon from "@mui/icons-material/SsidChart";
-import MenuIcon from '@mui/icons-material/Menu';
+import MenuIcon from "@mui/icons-material/Menu";
 
 import InputFab from "../components/InputFab";
 
@@ -88,14 +88,32 @@ const MainLayout = () => {
                   </Link>
                 </ListItemText>
               </ListItem>
+              <ListItem button>
+                <ListItemIcon>
+                  <SsidChartIcon />
+                </ListItemIcon>
+                <ListItemText>
+                  <Link
+                    style={{
+                      display: "block",
+                      color: "#666",
+                      textDecoration: "none",
+                    }}
+                    to="/income"
+                  >
+                    収支
+                  </Link>
+                </ListItemText>
+              </ListItem>
             </List>
             <Divider />
           </Box>
         </Drawer>
         <InputFab />
       </React.Fragment>
-      <Box sx={{ m:1 }}><Outlet /></Box>
-      
+      <Box sx={{ m: 1 }}>
+        <Outlet />
+      </Box>
     </div>
   );
 };

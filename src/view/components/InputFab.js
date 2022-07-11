@@ -15,69 +15,18 @@ import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
-const categories = [
-  {
-    value: "食料品",
-    label: "食料品",
-  },
-  {
-    value: "外食",
-    label: "外食",
-  },
-  {
-    value: "日用品",
-    label: "日用品",
-  },
-  {
-    value: "車",
-    label: "車",
-  },
-  {
-    value: "旅行",
-    label: "旅行",
-  },
-  {
-    value: "その他",
-    label: "その他",
-  },
-];
-
-const ways = [
-  {
-    value: "cash",
-    label: "現金",
-  },
-  {
-    value: "楽天",
-    label: "楽天",
-  },
-  {
-    value: "Tカード",
-    label: "Tカード",
-  },
-  {
-    value: "paypay",
-    label: "paypay",
-  },
-  {
-    value: "from楽天",
-    label: "from楽天",
-  },
-  {
-    value: "fromSBI",
-    label: "fromSBI",
-  },
-];
+import categories from "../../select-variables/categories";
+import ways from "../../select-variables/ways";
 
 const InputFab = () => {
   const theme = useTheme();
 
   const [title, setTitle] = useState("");
   const [cost, setCost] = useState(0);
-  const [category, setCategory] = useState("FOOD");
+  const [category, setCategory] = useState(categories[0].value);
   var today = new Date();
   const [date, setDate] = useState(today.getTime());
-  const [way, setWay] = useState("楽天");
+  const [way, setWay] = useState(ways[0].value);
 
   // Modalの状態
   const [open, setOpen] = useState(false);

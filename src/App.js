@@ -5,6 +5,7 @@ import Dashboard from "./view/Dashboard";
 import Kotei from "./view/Kotei";
 import MainLayout from "./view/MainLayout";
 import Visualization from "./view/Visualization";
+import Income from "./view/Income";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="kotei" element={<Kotei />} />
           <Route path="visualization" element={<Visualization />} />
+          <Route path="income" element={<Income />} />
         </Route>
       </Routes>
     </BrowserRouter>

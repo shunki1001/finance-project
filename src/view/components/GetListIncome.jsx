@@ -14,25 +14,12 @@ import Button from "@mui/material/Button";
 // from mui
 import { DataGrid } from "@mui/x-data-grid";
 
-import categories from "../../select-variables/categories";
-import ways from "../../select-variables/ways";
 import { Snackbar } from "@mui/material";
 
-const GetList = (props) => {
-  const { collectionName, month } = props;
+const collectionName = "income";
 
-  var selectCategories = [];
-  if (collectionName == "kotei") {
-    selectCategories = [
-      {
-        value: "固定費",
-        label: "固定費",
-      },
-    ];
-  } else {
-    selectCategories = categories;
-  }
-  const selectWays = ways;
+const GetListIncome = (props) => {
+  const { month } = props;
 
   const [dataList, setDataList] = useState([]);
   const [checkboxSelection, setCheckboxSelection] = useState(true);
@@ -47,8 +34,8 @@ const GetList = (props) => {
   });
   const columns = [
     {
-      field: "title",
-      headerName: "内容",
+      field: "who",
+      headerName: "どこから？",
       type: "string",
       width: 160,
       editable: true,
@@ -68,32 +55,14 @@ const GetList = (props) => {
       width: 100,
       editable: false,
     },
-    {
-      field: "category",
-      headerName: "カテゴリー",
-      type: "singleSelect",
-      width: 100,
-      editable: true,
-      valueOptions: selectCategories,
-    },
-    {
-      field: "way",
-      headerName: "支払方法",
-      type: "singleSelect",
-      width: 150,
-      editable: true,
-      valueOptions: selectWays,
-    },
   ];
   const rows = dataList.map((item) => {
     var todayTimestamp = new Date(item.month.seconds * 1000);
     return {
       id: item.id,
-      title: item.title,
+      who: item.who,
       cost: item.cost,
       month: `${todayTimestamp.getMonth() + 1}/${todayTimestamp.getDate()}`,
-      category: `${item.category ? item.category : "固定費"}`,
-      way: item.way,
     };
   });
 
@@ -127,10 +96,8 @@ const GetList = (props) => {
     // console.log(newRow);
     // console.log(oldRow);
     const updateData = {
-      title: newRow.title,
+      who: newRow.who,
       cost: newRow.cost,
-      category: newRow.category,
-      way: newRow.way,
     };
     await updateDoc(doc(db, collectionName, newRow.id), updateData);
     return { ...newRow };
@@ -139,7 +106,6 @@ const GetList = (props) => {
   // Delete
   const DeleteItems = () => {
     selectedItem.splice(-1, 1);
-    console.log(selectedItem);
     selectedItem.map((item) => {
       console.log(item);
       deleteDoc(doc(db, collectionName, item));
@@ -176,4 +142,4 @@ const GetList = (props) => {
   );
 };
 
-export default GetList;
+export default GetListIncome;
